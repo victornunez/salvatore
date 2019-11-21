@@ -1,22 +1,23 @@
 package com.victornunez.salvatore.controller;
 
-import com.victornunez.salvatore.model.Movie;
+import com.victornunez.salvatore.model.movie.Movie;
+import com.victornunez.salvatore.service.movie.MovieService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class MovieController {
+    private MovieService service;
 
-    @GetMapping(value = "/movie/{id}")
-    public Movie getMovie(@PathVariable String id) {
-        return new Movie(id);
+    @Autowired
+    public MovieController(MovieService service) {
+        this.service = service;
     }
 
-    @GetMapping(value = "/movie")
-    public List<Movie> searchMovie(@RequestParam(value = "q") String query, @RequestParam Optional<Integer> page) {
-        return Collections.emptyList();
+    @GetMapping(value = "/movie/{id}")
+    public Optional<Movie> getMovie(@PathVariable String id) {
+        return service.getMovie(id);
     }
 }
