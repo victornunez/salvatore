@@ -5,6 +5,8 @@ import com.victornunez.salvatore.connector.dto.credits.CreditsDTO;
 import com.victornunez.salvatore.connector.dto.movie.MovieDTO;
 import com.victornunez.salvatore.connector.dto.reviews.ReviewsDTO;
 import com.victornunez.salvatore.connector.dto.similar.SimilarResultsDTO;
+import com.victornunez.salvatore.connector.exception.MovieDBNotFoundException;
+import com.victornunez.salvatore.connector.exception.TMDBException;
 import com.victornunez.salvatore.model.movie.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +26,41 @@ public class MovieService {
 
     public Optional<Movie> getMovie(String id){
         try {
-            Optional<MovieDTO> movies = Optional.ofNullable(connector.getMovie(id));
-            Optional<ReviewsDTO> reviews = Optional.ofNullable(connector.getReviews(id));
-            Optional<CreditsDTO> credits = Optional.ofNullable(connector.getCredits(id));
-            Optional<SimilarResultsDTO> relatedMovies = Optional.ofNullable(connector.getSimilarMovies(id));
-            return transformer.transform(movies, reviews, credits, relatedMovies);
-        } catch (RuntimeException e) {
+            MovieDTO movies = connector.getMovie(id);
+
+            Optional<ReviewsDTO> reviews = getReviewsDTO(id);
+            Optional<CreditsDTO> credits = getCreditsDTO(id);
+            Optional<SimilarResultsDTO> relatedMovies = getSimilarResultsDTO(id);
+
+            return Optional.of(transformer.transformMovie(movies, reviews, credits, relatedMovies));
+        } catch (MovieDBNotFoundException e) {
             return Optional.empty();
         }
     }
+
+    private Optional<SimilarResultsDTO> getSimilarResultsDTO(String id) {
+        try {
+            return Optional.ofNullable(connector.getSimilarMovies(id));
+        } catch (TMDBException e){
+            return Optional.empty();
+        }
+    }
+
+    private Optional<CreditsDTO> getCreditsDTO(String id) {
+        try {
+            return Optional.ofNullable(connector.getCredits(id));
+        } catch (TMDBException e){
+            return Optional.empty();
+        }
+    }
+
+    private Optional<ReviewsDTO> getReviewsDTO(String id) {
+        try {
+            return Optional.ofNullable(connector.getReviews(id));
+        } catch (TMDBException e){
+            return Optional.empty();
+        }
+    }
+
+
 }

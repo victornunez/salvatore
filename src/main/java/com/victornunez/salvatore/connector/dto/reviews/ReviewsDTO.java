@@ -5,7 +5,7 @@ import java.util.List;
 public class ReviewsDTO {
     private Integer id;
     private Integer page;
-    private List<ReviewDTO> reviews;
+    private List<ReviewDTO> results;
 
     public Integer getId() {
         return id;
@@ -23,11 +23,11 @@ public class ReviewsDTO {
         this.page = page;
     }
 
-    public List<ReviewDTO> getReviews() {
-        return reviews;
+    public List<ReviewDTO> getResults() {
+        return results;
     }
 
-    public void setReviews(List<ReviewDTO> reviews) {
-        this.reviews = reviews;
+    public void setResults(List<ReviewDTO> results) {
+        this.results = results;
     }
 }

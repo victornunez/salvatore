@@ -41,6 +41,6 @@ public class MovieDBConnector {
     }
 
     public SearchResultsDTO searchMovies(String query, Integer page){
-        return restTemplate.getForObject(CREDITS_URL, SearchResultsDTO.class, token, query, page);
+        return restTemplate.getForObject(SEARCH_URL, SearchResultsDTO.class, token, query, page);
     }
 }

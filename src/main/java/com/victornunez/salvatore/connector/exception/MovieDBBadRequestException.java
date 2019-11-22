@@ -1,8 +1,6 @@
 package com.victornunez.salvatore.connector.exception;
 
-import java.io.IOException;
-
-public class MovieDBBadRequestException extends IOException {
+public class MovieDBBadRequestException extends TMDBException {
     public MovieDBBadRequestException(String message) {
         super(message);
     }

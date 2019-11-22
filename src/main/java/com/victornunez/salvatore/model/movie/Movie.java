@@ -1,5 +1,7 @@
 package com.victornunez.salvatore.model.movie;
 
+import com.victornunez.salvatore.model.credits.Cast;
+import com.victornunez.salvatore.model.credits.Crew;
 import com.victornunez.salvatore.model.review.Review;
 
 import java.math.BigDecimal;
@@ -15,11 +17,13 @@ public class Movie {
     private String releaseDate;
     private Integer revenue;
     private BigDecimal voteAverage;
-    private Optional<List<String>> genres;
+    private List<String> genres;
     private Optional<List<Review>> reviews;
     private Optional<List<SimilarMovie>> similarMovies;
+    private Optional<List<Cast>> cast;
+    private Optional<List<Crew>> crew;
 
-    public Movie(String id, String title, String originalTitle, String originalLanguage, String overview, String releaseDate, Integer revenue, BigDecimal voteAverage) {
+    public Movie(String id, String title, String originalTitle, String originalLanguage, String overview, String releaseDate, Integer revenue, BigDecimal voteAverage, List<String> genres, Optional<List<Review>> reviews, Optional<List<SimilarMovie>> similarMovies, Optional<List<Cast>> cast, Optional<List<Crew>> crew) {
         this.id = id;
         this.title = title;
         this.originalTitle = originalTitle;
@@ -28,6 +32,11 @@ public class Movie {
         this.releaseDate = releaseDate;
         this.revenue = revenue;
         this.voteAverage = voteAverage;
+        this.genres = genres;
+        this.reviews = reviews;
+        this.similarMovies = similarMovies;
+        this.cast = cast;
+        this.crew = crew;
     }
 
     public String getId() {
@@ -94,11 +103,11 @@ public class Movie {
         this.voteAverage = voteAverage;
     }
 
-    public Optional<List<String>> getGenres() {
+    public List<String> getGenres() {
         return genres;
     }
 
-    public void setGenres(Optional<List<String>> genres) {
+    public void setGenres(List<String> genres) {
         this.genres = genres;
     }
 
@@ -116,5 +125,21 @@ public class Movie {
 
     public void setSimilarMovies(Optional<List<SimilarMovie>> similarMovies) {
         this.similarMovies = similarMovies;
+    }
+
+    public Optional<List<Cast>> getCast() {
+        return cast;
+    }
+
+    public void setCast(Optional<List<Cast>> cast) {
+        this.cast = cast;
+    }
+
+    public Optional<List<Crew>> getCrew() {
+        return crew;
+    }
+
+    public void setCrew(Optional<List<Crew>> crew) {
+        this.crew = crew;
     }
 }
