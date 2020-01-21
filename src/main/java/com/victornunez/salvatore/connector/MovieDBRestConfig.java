@@ -10,6 +10,8 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+import java.util.Arrays;
+
 @Configuration
 public class MovieDBRestConfig {
     @Bean
@@ -21,6 +23,7 @@ public class MovieDBRestConfig {
         RestTemplate restTemplate = new RestTemplate(factory);
         restTemplate.setErrorHandler(errorHandler);
         restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(config.getHost()));
+        restTemplate.setInterceptors(Arrays.asList(new MovieDBInterceptor()));
         return restTemplate;
     }
 }
