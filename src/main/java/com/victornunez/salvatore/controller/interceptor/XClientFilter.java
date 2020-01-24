@@ -1,14 +1,13 @@
-package com.victornunez.salvatore.controller;
+package com.victornunez.salvatore.controller.interceptor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
@@ -28,7 +27,8 @@ public class XClientFilter implements Filter {
         if (Objects.nonNull(httpRequest.getHeader(XCLIENT))){
             chain.doFilter(request, response);
         } else {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing X-Client header");
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "X-Client header is mandatory");
         }
     }
 

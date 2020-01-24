@@ -1,6 +1,8 @@
 package com.victornunez.salvatore.connector;
 
 import com.victornunez.salvatore.config.PropertiesConfig;
+import com.victornunez.salvatore.connector.interceptor.HeadersInterceptor;
+import com.victornunez.salvatore.connector.interceptor.MovieDBInterceptor;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class MovieDBRestConfig {
         RestTemplate restTemplate = new RestTemplate(factory);
         restTemplate.setErrorHandler(errorHandler);
         restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(config.getHost()));
-        restTemplate.setInterceptors(Arrays.asList(new MovieDBInterceptor()));
+        restTemplate.setInterceptors(Arrays.asList(new HeadersInterceptor(), new MovieDBInterceptor()));
         return restTemplate;
     }
 }
