@@ -29,6 +29,7 @@ public class XClientFilter implements Filter {
         } else {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "X-Client header is mandatory");
+            LOGGER.info("BAD REQUEST: X-Client header is mandatory");
         }
     }
 

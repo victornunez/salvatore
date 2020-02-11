@@ -10,4 +10,8 @@ public class ThreadLocalContext {
     public static void setContext(Context value) {
         context.set(value);
     }
+
+    public static void clear() {
+        context.remove();
+    }
 }
