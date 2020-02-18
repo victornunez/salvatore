@@ -1,5 +1,6 @@
 package com.victornunez.salvatore.connector;
 
+import com.victornunez.salvatore.aspect.Performance;
 import com.victornunez.salvatore.config.PropertiesConfig;
 import com.victornunez.salvatore.connector.dto.credits.CreditsDTO;
 import com.victornunez.salvatore.connector.dto.movie.MovieDTO;
@@ -26,26 +27,32 @@ public class MovieDBConnector {
         this.token = config.getToken();
     }
 
+    @Performance
     public MovieDTO getMovie(String id){
         return restTemplate.getForObject(MOVIE_URL, MovieDTO.class, id, token);
     }
 
+    @Performance
     public ReviewsDTO getReviews(String id){
         return restTemplate.getForObject(REVIEWS_URL, ReviewsDTO.class, id, token);
     }
 
+    @Performance
     public SimilarResultsDTO getSimilarMovies(String id){
         return restTemplate.getForObject(SIMILAR_MOVIE_URL, SimilarResultsDTO.class, id, token);
     }
 
+    @Performance
     public CreditsDTO getCredits(String id){
         return restTemplate.getForObject(CREDITS_URL, CreditsDTO.class, id, token);
     }
 
+    @Performance
     public SearchResultsDTO searchMovies(String query, Integer page){
         return restTemplate.getForObject(SEARCH_URL, SearchResultsDTO.class, token, query, page);
     }
 
+    @Performance
     public TopRatedResultsDTO getTopRatedMovies(){
         return restTemplate.getForObject(TOP_RATED_URL, TopRatedResultsDTO.class, token);
     }

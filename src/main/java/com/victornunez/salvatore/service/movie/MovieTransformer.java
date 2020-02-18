@@ -1,5 +1,6 @@
 package com.victornunez.salvatore.service.movie;
 
+import com.victornunez.salvatore.aspect.Performance;
 import com.victornunez.salvatore.connector.dto.credits.CastDTO;
 import com.victornunez.salvatore.connector.dto.credits.CreditsDTO;
 import com.victornunez.salvatore.connector.dto.credits.CrewDTO;
@@ -35,6 +36,7 @@ public class MovieTransformer {
         this.topRatedMoviesSnapshot = topRatedMoviesSnapshot;
     }
 
+    @Performance
     public Movie transformMovie (MovieDTO movie,
                                  Optional<ReviewsDTO> reviewsOpt,
                                  Optional<CreditsDTO> creditsOpt,

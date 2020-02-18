@@ -27,7 +27,7 @@ public class TopRatedMoviesSnapshot {
         this.transformer = transformer;
     }
 
-    @Scheduled(fixedDelay = 30000)
+    @Scheduled(fixedDelay = 1800000)
     public void refresh() {
         ThreadLocalContext.setContext(this.createContext());
         TopRatedResultsDTO results = this.connector.getTopRatedMovies();
