@@ -16,6 +16,9 @@ import com.victornunez.salvatore.model.credits.Job;
 import com.victornunez.salvatore.model.movie.Movie;
 import com.victornunez.salvatore.model.movie.SimilarMovie;
 import com.victornunez.salvatore.model.review.Review;
+import com.victornunez.salvatore.snapshot.TopRatedMoviesSnapshot;
+import com.victornunez.salvatore.snapshot.TopRatedMoviesTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,11 +28,17 @@ import java.util.stream.Collectors;
 @Component
 public class MovieTransformer {
     private static final Integer MAX_SIZE = 10;
+    private TopRatedMoviesSnapshot topRatedMoviesSnapshot;
+
+    @Autowired
+    public MovieTransformer(TopRatedMoviesSnapshot topRatedMoviesSnapshot) {
+        this.topRatedMoviesSnapshot = topRatedMoviesSnapshot;
+    }
 
     public Movie transformMovie (MovieDTO movie,
-                            Optional<ReviewsDTO> reviewsOpt,
-                            Optional<CreditsDTO> creditsOpt,
-                            Optional<SimilarResultsDTO> relatedMoviesOpt) {
+                                 Optional<ReviewsDTO> reviewsOpt,
+                                 Optional<CreditsDTO> creditsOpt,
+                                 Optional<SimilarResultsDTO> relatedMoviesOpt) {
 
 
         return convertMovie(movie,
@@ -53,6 +62,7 @@ public class MovieTransformer {
                 movieDTO.getReleaseDate(),
                 movieDTO.getRevenue(),
                 movieDTO.getVoteAverage(),
+                this.topRatedMoviesSnapshot.isTopRated(Integer.parseInt(movieDTO.getId())),
                 genres,
                 reviews,
                 similarMovies,

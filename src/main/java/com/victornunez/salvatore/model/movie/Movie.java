@@ -17,13 +17,14 @@ public class Movie {
     private String releaseDate;
     private Integer revenue;
     private BigDecimal voteAverage;
+    private Boolean isTopRated;
     private List<String> genres;
     private Optional<List<Review>> reviews;
     private Optional<List<SimilarMovie>> similarMovies;
     private Optional<List<Cast>> cast;
     private Optional<List<Crew>> crew;
 
-    public Movie(String id, String title, String originalTitle, String originalLanguage, String overview, String releaseDate, Integer revenue, BigDecimal voteAverage, List<String> genres, Optional<List<Review>> reviews, Optional<List<SimilarMovie>> similarMovies, Optional<List<Cast>> cast, Optional<List<Crew>> crew) {
+    public Movie(String id, String title, String originalTitle, String originalLanguage, String overview, String releaseDate, Integer revenue, BigDecimal voteAverage, Boolean isTopRated, List<String> genres, Optional<List<Review>> reviews, Optional<List<SimilarMovie>> similarMovies, Optional<List<Cast>> cast, Optional<List<Crew>> crew) {
         this.id = id;
         this.title = title;
         this.originalTitle = originalTitle;
@@ -32,6 +33,7 @@ public class Movie {
         this.releaseDate = releaseDate;
         this.revenue = revenue;
         this.voteAverage = voteAverage;
+        this.isTopRated = isTopRated;
         this.genres = genres;
         this.reviews = reviews;
         this.similarMovies = similarMovies;
@@ -101,6 +103,14 @@ public class Movie {
 
     public void setVoteAverage(BigDecimal voteAverage) {
         this.voteAverage = voteAverage;
+    }
+
+    public Boolean getTopRated() {
+        return isTopRated;
+    }
+
+    public void setTopRated(Boolean topRated) {
+        isTopRated = topRated;
     }
 
     public List<String> getGenres() {

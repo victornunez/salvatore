@@ -6,6 +6,7 @@ import com.victornunez.salvatore.connector.dto.movie.MovieDTO;
 import com.victornunez.salvatore.connector.dto.reviews.ReviewsDTO;
 import com.victornunez.salvatore.connector.dto.similar.SearchResultsDTO;
 import com.victornunez.salvatore.connector.dto.similar.SimilarResultsDTO;
+import com.victornunez.salvatore.connector.dto.toprated.TopRatedResultsDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,6 +17,7 @@ public class MovieDBConnector {
     private static final String REVIEWS_URL = "/3/movie/{movie_id}/reviews?api_key={token}";
     private static final String CREDITS_URL = "/3/movie/{movie_id}/credits?api_key={token}";
     private static final String SEARCH_URL = "/3/search/movie/?api_key={token}&query={query}&page={page}";
+    private static final String TOP_RATED_URL = "/3/movie/top_rated/?api_key={token}";
     private RestTemplate restTemplate;
     private String token;
 
@@ -42,5 +44,9 @@ public class MovieDBConnector {
 
     public SearchResultsDTO searchMovies(String query, Integer page){
         return restTemplate.getForObject(SEARCH_URL, SearchResultsDTO.class, token, query, page);
+    }
+
+    public TopRatedResultsDTO getTopRatedMovies(){
+        return restTemplate.getForObject(TOP_RATED_URL, TopRatedResultsDTO.class, token);
     }
 }
