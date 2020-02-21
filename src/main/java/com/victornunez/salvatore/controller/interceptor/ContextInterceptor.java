@@ -21,16 +21,15 @@ import java.util.stream.Collectors;
 public class ContextInterceptor implements HandlerInterceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestInterceptor.class);
     private static final String XUOW = "X-UOW";
-    private static final String UOW_KEY = "uow";
     private static final String UNDEFINED_HOST = "UNDEFINED_HOST";
-    private static final String HOST_KEY = "host";
+    private static final String HOST = "host";
     private static final String XMOVIE_PREFIX = "xmovie";
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String uow = getUOW(request);
         LOGGER.info(String.format("Creating context for UOW: %s",  uow));
-        MDC.put(UOW_KEY, uow);
-        MDC.put(HOST_KEY, getHost());
+        MDC.put(XUOW, uow);
+        MDC.put(HOST, getHost());
         createContext(request, uow);
         return true;
     }
@@ -41,7 +40,7 @@ public class ContextInterceptor implements HandlerInterceptor {
                             .filter(h -> h.startsWith(XMOVIE_PREFIX))
                             .collect(Collectors.toMap(Function.identity(), request::getHeader));
 
-        xMovieHeaders.put(UOW_KEY, uow);
+        xMovieHeaders.put(XUOW, uow);
         ThreadLocalContext.setContext(new Context(xMovieHeaders));
     }
 
