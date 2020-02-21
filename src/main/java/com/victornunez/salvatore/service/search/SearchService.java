@@ -9,13 +9,14 @@ import com.victornunez.salvatore.service.movie.MovieTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SearchService {
-    MovieDBConnector connector;
-    MovieTransformer transformer;
+    private MovieDBConnector connector;
+    private MovieTransformer transformer;
 
     @Autowired
     public SearchService(MovieDBConnector connector, MovieTransformer transformer) {
@@ -23,12 +24,12 @@ public class SearchService {
         this.transformer = transformer;
     }
 
-    public Optional<List<SimilarMovie>> searchMovies(String query, Integer page){
+    public List<SimilarMovie> searchMovies(String query, Integer page){
         try {
             SearchResultsDTO relatedMovies = connector.searchMovies(query, page);
-            return Optional.of(transformer.transformSearch(relatedMovies));
+            return transformer.transformSearch(relatedMovies);
         } catch (MovieDBNotFoundException e) {
-            return Optional.empty();
+            return new ArrayList<SimilarMovie>();
         }
     }
 }

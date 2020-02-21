@@ -22,6 +22,8 @@ import com.victornunez.salvatore.snapshot.TopRatedMoviesTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,7 +57,7 @@ public class MovieTransformer {
         return searchResultsDTO.getResults().stream().map(this::convertSimilarMovie).collect(Collectors.toList());
     }
 
-    private Movie convertMovie(MovieDTO movieDTO, List<String> genres, Optional<List<Review>> reviews, Optional<List<SimilarMovie>> similarMovies, Optional<List<Cast>> cast, Optional<List<Crew>> crew) {
+    private Movie convertMovie(MovieDTO movieDTO, List<String> genres, List<Review> reviews, List<SimilarMovie> similarMovies, List<Cast> cast, List<Crew> crew) {
         return new Movie(movieDTO.getId(),
                 movieDTO.getTitle(),
                 movieDTO.getOriginalTitle(),
@@ -76,34 +78,36 @@ public class MovieTransformer {
         return genres.stream().map(GenreDTO::getName).collect(Collectors.toList());
     }
 
-    private Optional<List<Review>> convertReviews(Optional<ReviewsDTO> reviewsOpt) {
-        return reviewsOpt.map(ReviewsDTO::getResults).map(
-                reviewsDto -> reviewsDto.stream().limit(MAX_SIZE).map(this::convertReview).collect(Collectors.toList()));
+    private List<Review> convertReviews(Optional<ReviewsDTO> reviewsOpt) {
+        return reviewsOpt.map(ReviewsDTO::getResults)
+                .map(reviewsDto -> reviewsDto.stream().limit(MAX_SIZE).map(this::convertReview).collect(Collectors.toList()))
+                .orElse(new ArrayList<Review>());
     }
 
     private Review convertReview(ReviewDTO reviewDTO) {
         return new Review(reviewDTO.getAuthor(), reviewDTO.getContent());
     }
 
-    private Optional<List<SimilarMovie>> convertSimilarMovies(Optional<SimilarResultsDTO> similarResultsOpt) {
-        return similarResultsOpt.map(SimilarResultsDTO::getResults).map(
-                similarMoviesDto -> similarMoviesDto.stream().limit(10).map(this::convertSimilarMovie).collect(Collectors.toList()));
+    private List<SimilarMovie> convertSimilarMovies(Optional<SimilarResultsDTO> similarResultsOpt) {
+        return similarResultsOpt.map(SimilarResultsDTO::getResults)
+                .map(similarMoviesDto -> similarMoviesDto.stream().limit(10).map(this::convertSimilarMovie).collect(Collectors.toList()))
+                .orElse(new ArrayList<SimilarMovie>());
     }
 
     private SimilarMovie convertSimilarMovie(RelatedMovieDTO relatedMovie) {
         return new SimilarMovie(relatedMovie.getId(), relatedMovie.getOriginalTitle(), relatedMovie.getReleaseDate());
     }
 
-    private Optional<List<Cast>> convertCastList(Optional<CreditsDTO> creditsDTO) {
-        return creditsDTO.map(credits -> this.convertCast(credits.getCast()));
+    private List<Cast> convertCastList(Optional<CreditsDTO> creditsDTO) {
+        return creditsDTO.map(credits -> this.convertCast(credits.getCast())).orElse(new ArrayList<Cast>());
     }
 
     private List<Cast> convertCast(List<CastDTO> castDTOS) {
         return castDTOS.stream().limit(MAX_SIZE).map(castDTO -> new Cast(castDTO.getCharacter(), castDTO.getName())).collect(Collectors.toList());
     }
 
-    private Optional<List<Crew>> convertCrewList(Optional<CreditsDTO> creditsDTO) {
-        return creditsDTO.map(credits -> this.convertCrew(credits.getCrew()));
+    private List<Crew> convertCrewList(Optional<CreditsDTO> creditsDTO) {
+        return creditsDTO.map(credits -> this.convertCrew(credits.getCrew())).orElse(new ArrayList<Crew>());
     }
 
     private List<Crew> convertCrew(List<CrewDTO> crewDTOS) {

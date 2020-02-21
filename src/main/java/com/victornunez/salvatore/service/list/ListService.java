@@ -18,28 +18,23 @@ public class ListService {
         this.lists = lists;
     }
 
-    public MovieList getLists(String id) {
-        return lists.getList(id)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cannot find list"));
+    public Optional<MovieList> getLists(String id) {
+        return lists.getList(id);
     }
 
-    public MovieList createList(String user, String name) {
-        return lists.createList(user, name)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cannot create list"));
+    public Optional<MovieList> createList(String user, String name) {
+        return lists.createList(user, name);
     }
 
-    public MovieList deleteList(String id) {
-        return lists.deleteList(id)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cannot delete list"));
+    public Optional<MovieList> deleteList(String id) {
+        return lists.deleteList(id);
     }
 
-    public MovieList addMovies(String id, List<String> movies) {
-        return lists.addMovies(id, movies)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cannot add movies"));
+    public Optional<MovieList> addMovies(String id, List<String> movies) {
+        return lists.addMovies(id, movies);
     }
 
-    public MovieList removeMovies(String id, List<String> movies) {
-        return lists.removeMovies(id, movies)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cannot delete movies"));
+    public Optional<MovieList> removeMovies(String id, List<String> movies) {
+        return lists.removeMovies(id, movies);
     }
 }
