@@ -19,12 +19,12 @@ public class Movie {
     private BigDecimal voteAverage;
     private Boolean isTopRated;
     private List<String> genres;
-    private Optional<List<Review>> reviews;
-    private Optional<List<SimilarMovie>> similarMovies;
-    private Optional<List<Cast>> cast;
-    private Optional<List<Crew>> crew;
+    private List<Review> reviews;
+    private List<SimilarMovie> similarMovies;
+    private List<Cast> cast;
+    private List<Crew> crew;
 
-    public Movie(String id, String title, String originalTitle, String originalLanguage, String overview, String releaseDate, Integer revenue, BigDecimal voteAverage, Boolean isTopRated, List<String> genres, Optional<List<Review>> reviews, Optional<List<SimilarMovie>> similarMovies, Optional<List<Cast>> cast, Optional<List<Crew>> crew) {
+    public Movie(String id, String title, String originalTitle, String originalLanguage, String overview, String releaseDate, Integer revenue, BigDecimal voteAverage, Boolean isTopRated, List<String> genres, List<Review> reviews, List<SimilarMovie> similarMovies, List<Cast> cast, List<Crew> crew) {
         this.id = id;
         this.title = title;
         this.originalTitle = originalTitle;
@@ -105,7 +105,7 @@ public class Movie {
         this.voteAverage = voteAverage;
     }
 
-    public Boolean getTopRated() {
+    public Boolean isTopRated() {
         return isTopRated;
     }
 
@@ -121,35 +121,35 @@ public class Movie {
         this.genres = genres;
     }
 
-    public Optional<List<Review>> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(Optional<List<Review>> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 
-    public Optional<List<SimilarMovie>> getSimilarMovies() {
+    public List<SimilarMovie> getSimilarMovies() {
         return similarMovies;
     }
 
-    public void setSimilarMovies(Optional<List<SimilarMovie>> similarMovies) {
+    public void setSimilarMovies(List<SimilarMovie> similarMovies) {
         this.similarMovies = similarMovies;
     }
 
-    public Optional<List<Cast>> getCast() {
+    public List<Cast> getCast() {
         return cast;
     }
 
-    public void setCast(Optional<List<Cast>> cast) {
+    public void setCast(List<Cast> cast) {
         this.cast = cast;
     }
 
-    public Optional<List<Crew>> getCrew() {
+    public List<Crew> getCrew() {
         return crew;
     }
 
-    public void setCrew(Optional<List<Crew>> crew) {
+    public void setCrew(List<Crew> crew) {
         this.crew = crew;
     }
 }

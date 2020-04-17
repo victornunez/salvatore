@@ -8,6 +8,7 @@ import com.victornunez.salvatore.connector.dto.similar.SimilarResultsDTO;
 import com.victornunez.salvatore.connector.exception.TMDBException;
 import com.victornunez.salvatore.model.movie.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class MovieService {
         this.executor = defaultTaskExecutor;
     }
 
+    @Cacheable(value = "movie", key = "#id", unless = "!#result.isTopRated()")
     public Optional<Movie> getMovie(String id){
         MovieDTO movieDto = connector.getMovie(id);
 

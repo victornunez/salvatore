@@ -21,7 +21,7 @@ public class SearchController {
     }
 
     @GetMapping(value = "/search")
-    public Optional<List<SimilarMovie>> search(@RequestParam(value = "q") String query, @RequestParam Optional<Integer> page) {
+    public List<SimilarMovie> search(@RequestParam(value = "q") String query, @RequestParam Optional<Integer> page) {
         return service.searchMovies(query, page.orElse(PAGE));
     }
 }

@@ -21,26 +21,31 @@ public class ListController {
 
     @GetMapping(value = "/list/{id}")
     public MovieList getList(@PathVariable String id) {
-        return service.getLists(id);
+        return service.getLists(id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cannot find list"));
     }
 
     @PostMapping(value = "/list")
     public MovieList createList(@RequestBody CreateListInfo info) {
-        return service.createList(info.getUser(), info.getName());
+        return service.createList(info.getUser(), info.getName())
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cannot create list"));
     }
 
     @DeleteMapping(value = "/list/{id}")
     public MovieList deleteList(@PathVariable String id) {
-        return service.deleteList(id);
+        return service.deleteList(id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cannot delete list"));
     }
 
     @PostMapping(value = "/list/{id}/movies")
     public MovieList addMoviesToList(@PathVariable String id, @RequestBody MoviesParams movies) {
-        return service.addMovies(id, movies.getMovies());
+        return service.addMovies(id, movies.getMovies())
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cannot add movies"));
     }
 
     @DeleteMapping(value = "/list/{id}/movies")
     public MovieList deleteMoviesFromList(@PathVariable String id, @RequestBody MoviesParams movies) {
-        return service.removeMovies(id, movies.getMovies());
+        return service.removeMovies(id, movies.getMovies())
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cannot delete movies"));
     }
 }
