@@ -1,6 +1,11 @@
 package com.victornunez.salvatore.model.list;
 
+import com.victornunez.salvatore.model.movie.SimilarMovie;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import static org.hibernate.validator.internal.util.CollectionHelper.newHashSet;
@@ -9,13 +14,15 @@ public class MovieList {
     private String id;
     private String user;
     private String name;
-    private Set<String> movies;
+    private List<SimilarMovie> movies;
+    private LocalDate creationDate;
 
-    public MovieList(String id, String user, String name) {
+    public MovieList(String id, String user, String name, List<SimilarMovie> movies, LocalDate creationDate) {
         this.id = id;
         this.user = user;
         this.name = name;
-        this.movies = newHashSet();
+        this.movies = movies;
+        this.creationDate = creationDate;
     }
 
     public String getId() {
@@ -42,11 +49,19 @@ public class MovieList {
         this.name = name;
     }
 
-    public Set<String> getMovies() {
+    public List<SimilarMovie> getMovies() {
         return movies;
     }
 
-    public void setMovies(Set<String> movies) {
+    public void setMovies(List<SimilarMovie> movies) {
         this.movies = movies;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 }

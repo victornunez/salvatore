@@ -1,10 +1,10 @@
 package com.victornunez.salvatore.model.list;
 
-public class CreateListInfo {
+public class CreationListInfo {
     private String name;
     private String user;
 
-    public CreateListInfo(String user, String name) {
+    public CreationListInfo(String user, String name) {
         this.user = user;
         this.name = name;
     }

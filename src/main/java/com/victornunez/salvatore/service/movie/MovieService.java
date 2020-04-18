@@ -7,14 +7,17 @@ import com.victornunez.salvatore.connector.dto.reviews.ReviewsDTO;
 import com.victornunez.salvatore.connector.dto.similar.SimilarResultsDTO;
 import com.victornunez.salvatore.connector.exception.TMDBException;
 import com.victornunez.salvatore.model.movie.Movie;
+import com.victornunez.salvatore.model.movie.SimilarMovie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieService {
@@ -51,6 +54,14 @@ public class MovieService {
         } catch (InterruptedException | ExecutionException e) {
             return Optional.empty();
         }
+    }
+
+    public List<SimilarMovie> getMovies(List<String> ids){
+        return ids.stream()
+                .map(id -> CompletableFuture.supplyAsync(() -> connector.getMovie(id), executor)
+                        .thenApply(m -> transformer.transformMovie(m)))
+                .map(CompletableFuture::join)
+                .collect(Collectors.toList());
     }
 
     private Optional<SimilarResultsDTO> getSimilarResultsDTO(String id) {

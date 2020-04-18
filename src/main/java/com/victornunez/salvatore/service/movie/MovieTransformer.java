@@ -53,6 +53,11 @@ public class MovieTransformer {
                 this.convertCrewList(creditsOpt));
     }
 
+    @Performance
+    public SimilarMovie transformMovie (MovieDTO movie) {
+        return convertMovie(movie);
+    }
+
     public List<SimilarMovie> transformSearch(SearchResultsDTO searchResultsDTO){
         return searchResultsDTO.getResults().stream().map(this::convertSimilarMovie).collect(Collectors.toList());
     }
@@ -72,6 +77,12 @@ public class MovieTransformer {
                 similarMovies,
                 cast,
                 crew);
+    }
+
+    private SimilarMovie convertMovie(MovieDTO movieDTO) {
+        return new SimilarMovie(movieDTO.getId(),
+                movieDTO.getOriginalTitle(),
+                movieDTO.getReleaseDate());
     }
 
     private List<String> convertGenres(List<GenreDTO> genres) {
@@ -95,7 +106,7 @@ public class MovieTransformer {
     }
 
     private SimilarMovie convertSimilarMovie(RelatedMovieDTO relatedMovie) {
-        return new SimilarMovie(relatedMovie.getId(), relatedMovie.getOriginalTitle(), relatedMovie.getReleaseDate());
+        return new SimilarMovie(relatedMovie.getId().toString(), relatedMovie.getOriginalTitle(), relatedMovie.getReleaseDate());
     }
 
     private List<Cast> convertCastList(Optional<CreditsDTO> creditsDTO) {
