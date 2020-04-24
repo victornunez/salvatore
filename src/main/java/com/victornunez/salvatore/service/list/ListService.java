@@ -1,40 +1,63 @@
 package com.victornunez.salvatore.service.list;
 
+import com.victornunez.salvatore.model.list.CreationListInfo;
 import com.victornunez.salvatore.model.list.MovieList;
-import com.victornunez.salvatore.storage.Lists;
+import com.victornunez.salvatore.model.movie.SimilarMovie;
+import com.victornunez.salvatore.service.movie.MovieService;
+import com.victornunez.salvatore.storage.ListRepository;
+import com.victornunez.salvatore.storage.pojo.ListDAO;
+import com.victornunez.salvatore.storage.pojo.MovieDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import java.util.stream.Collectors;
 
 @Service
 public class ListService {
-    private Lists lists;
+    private ListRepository repository;
+    private ListTransformer listTransformer;
+    private MovieService movieService;
 
-    public ListService(Lists lists) {
-        this.lists = lists;
+    @Autowired
+    public ListService(
+            ListRepository repository,
+            ListTransformer listTransformer,
+            MovieService movieService
+    ) {
+        this.repository = repository;
+        this.listTransformer = listTransformer;
+        this.movieService = movieService;
     }
 
-    public Optional<MovieList> getLists(String id) {
-        return lists.getList(id);
+    public Optional<MovieList> getList(String id) {
+        return repository.findById(id).map(this::buildUserList);
     }
 
-    public Optional<MovieList> createList(String user, String name) {
-        return lists.createList(user, name);
+    public MovieList createList(CreationListInfo info) {
+        ListDAO newList = this.listTransformer.createEmptyList(info);
+        return buildUserList(this.repository.save(newList));
     }
 
-    public Optional<MovieList> deleteList(String id) {
-        return lists.deleteList(id);
+    public void deleteList(String id) {
+        repository.deleteById(id);
     }
 
     public Optional<MovieList> addMovies(String id, List<String> movies) {
-        return lists.addMovies(id, movies);
+        List<MovieDAO> newMovies = movies.stream().map(listTransformer::createMovieDAO).collect(Collectors.toList());
+        repository.addMovies(id, newMovies);
+        return repository.findById(id).map(this::buildUserList);
     }
 
     public Optional<MovieList> removeMovies(String id, List<String> movies) {
-        return lists.removeMovies(id, movies);
+        repository.deleteMovies(id, movies);
+        return repository.findById(id).map(this::buildUserList);
+    }
+
+    private MovieList buildUserList(ListDAO list){
+        List<String> ids = list.getMovies().stream().map(MovieDAO::getId).collect(Collectors.toList());
+        List<SimilarMovie> movies = this.movieService.getMovies(ids);
+        return this.listTransformer.transformList(list, movies);
     }
 }

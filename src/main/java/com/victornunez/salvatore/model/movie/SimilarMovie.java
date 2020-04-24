@@ -1,21 +1,21 @@
 package com.victornunez.salvatore.model.movie;
 
 public class SimilarMovie {
-    private Integer id;
+    private String id;
     private String originalTitle;
     private String releaseDate;
 
-    public SimilarMovie(Integer id, String originalTitle, String releaseDate) {
+    public SimilarMovie(String id, String originalTitle, String releaseDate) {
         this.id = id;
         this.originalTitle = originalTitle;
         this.releaseDate = releaseDate;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
